@@ -60,7 +60,9 @@ function Start-HuduProcedure {
     if ($PSBoundParameters.ContainsKey('Name'))    { $params.name = $Name }
 
     try {
-        return $(Invoke-HuduRequest -Method POST -Resource "/api/v1/procedures/$ProcedureId/kickoff" -Params $params)
+        
+        $r = Invoke-HuduRequest -Method POST -Resource "/api/v1/procedures/$ProcedureId/kickoff" -Params $params
+        return ($r.procedure ?? $r)
     }
     catch {
         Write-Warning "Failed to kick off procedure ID $ProcedureId- $($_.Exception.Message)"
